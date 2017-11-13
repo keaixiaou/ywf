@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>asdhjakshdkasjhk</div>
+<script src="public/js/jquery.js"></script>
+<script>
+    $(function(){
+        $.ajax({
+            type:"POST",
+            url:"http://zhttp.test.com/Api/Main/index",
+            data:{pid:111},
+            dataType:"html",
+            success:function(data){
+                console.log(data);
+            }
+        });
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "82b032c8f1d100a406b451ec956dccfd",
+    "packages": [
+        {
+            "name": "keaixiaou/zphp",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/keaixiaou/zphp.git",
+                "reference": "a8bc40f62752e6d3a224b430156f19e11facc67b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/keaixiaou/zphp/zipball/a8bc40f62752e6d3a224b430156f19e11facc67b",
+                "reference": "a8bc40f62752e6d3a224b430156f19e11facc67b",
+                "shasum": ""
+            },
+            "require": {
+                "ext-swoole": ">=1.8.0,<2.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ZPHP\\": "ZPHP"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "huaerjie",
+                    "email": "286252682@qq.com",
+                    "homepage": "https://github.com/keaixiaou"
+                }
+            ],
+            "description": "Asynchronous non-blocking framework based on ZPHP transformation",
+            "support": {
+                "source": "https://github.com/keaixiaou/zphp/tree/master",
+                "issues": "https://github.com/keaixiaou/zphp/issues"
+            },
+            "time": "2017-05-23 02:10:58"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "keaixiaou/zphp": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}

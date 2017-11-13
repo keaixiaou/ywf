@@ -1,0 +1,67 @@
+[
+    {
+        "name": "zetacomponents/base",
+        "version": "1.9",
+        "version_normalized": "1.9.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/zetacomponents/Base.git",
+            "reference": "f20df24e8de3e48b6b69b2503f917e457281e687"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/zetacomponents/Base/f20df24e8de3e48b6b69b2503f917e457281e687.zip",
+            "reference": "f20df24e8de3e48b6b69b2503f917e457281e687",
+            "shasum": ""
+        },
+        "require-dev": {
+            "zetacomponents/unit-test": "*"
+        },
+        "time": "2014-09-19T03:28:34+00:00",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "Sergey Alexeev"
+            },
+            {
+                "name": "Sebastian Bergmann"
+            },
+            {
+                "name": "Jan Borsodi"
+            },
+            {
+                "name": "Raymond Bosman"
+            },
+            {
+                "name": "Frederik Holljen"
+            },
+            {
+                "name": "Kore Nordmann"
+            },
+            {
+                "name": "Derick Rethans"
+            },
+            {
+                "name": "Vadym Savchuk"
+            },
+            {
+                "name": "Tobias Schlitt"
+            },
+            {
+                "name": "Alexandru Stanoi"
+            }
+        ],
+        "description": "The Base package provides the basic infrastructure that all packages rely on. Therefore every component relies on this package.",
+        "homepage": "https://github.com/zetacomponents"
+    }
+]
