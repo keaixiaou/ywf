@@ -8,6 +8,7 @@
 
 
 define("ROOTPATH", __DIR__);
+
 require ROOTPATH.'/Ywf/Ywf.php';
 
 use Ywf\Ywf;
