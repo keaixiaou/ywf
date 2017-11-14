@@ -8,6 +8,7 @@
 
 namespace Ywf\Controller;
 
+use Library\MiddleResponse;
 use Ywf\Core\Config;
 use Ywf\Core\Log;
 use Ywf\Core\YwfException;
@@ -50,9 +51,6 @@ class Controller {
     protected $template;
     protected $tplVar = [];
     protected $tplFile = '';
-    protected $tmodule ;
-    protected $tcontroller;
-    protected $tmethod;
 
 
     function __construct()
@@ -64,7 +62,37 @@ class Controller {
         $this->context = Ywf::make(Context::class);
     }
 
+    protected final function middleware(){
+        $middleRet = true;
+        try {
+            $middlewareConfig = Config::getField('middleware', $this->context->get('module'));
+            if(!empty($middlewareConfig)){
+                foreach ($middlewareConfig as $middle) {
+                    $middRes = Ywf::make($middle)->doFilter($this->request);
+                    if ($middRes !== true && $middRes instanceof MiddleResponse) {
+                        $this->redirect($middRes->getUrl());
+                        throw new \Exception("");
+                    }
+                }
+            }
+        }catch(\Exception $e){
+            $middleRet = false;
+        }
+        return $middleRet;
+    }
 
+    /**
+     * 全局变量的初始化
+     */
+    public function init()
+    {
+        $viewConfig = [
+            'module' => $this->context->get('module'),
+            'controller' => $this->context->get('controller'),
+            'method' => $this->context->get('action')
+        ];
+        $this->view->init($viewConfig);
+    }
 
 
     /**
@@ -79,22 +107,18 @@ class Controller {
             }
 
             $result = null;
-            if($this->checkResponse() && $initRes){
+            if($this->checkResponse() && $initRes === true){
                 $result = call_user_func_array([$this, $this->baseMethod], $this->baseParam);
             }
         }catch(\Exception $e){
             $this->onUserExceptionHandle($e->getMessage());
             Error::setException($e);
-            throw new YwfException($e->getMessage());
+            $result = Error::info($e->getMessage());
         }
 
         $this->endResponse($result);
     }
 
-
-    protected function middleware(){
-        return true;
-    }
 
 
     /**
@@ -249,7 +273,7 @@ class Controller {
      */
     public function redirect($url){
         $this->setHeader('Location', $url);
-        $this->strReturn('', 302);
+        $this->strReturn('', Response::CODE_REDIRECT);
     }
 
 
@@ -281,18 +305,6 @@ class Controller {
     }
 
 
-    /**
-     * 全局变量的初始化
-     */
-    public function init()
-    {
-        if(!empty($this->view)) {
-            $this->view->init([
-                'module' => $this->context->get('module'),
-                'controller' => $this->context->get('controller'),
-                'method' => $this->context->get('action')
-            ]);
-        }
-    }
+
 
 }

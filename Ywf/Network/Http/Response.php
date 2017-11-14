@@ -15,6 +15,7 @@ use Ywf\Session\Session;
 class Response extends BaseResponse{
 
     const CODE_NORMAL = 200;
+    const CODE_REDIRECT = 302;
     static $HTTP_HEADERS = array(
         100 => "100 Continue",
         101 => "101 Switching Protocols",

@@ -11,12 +11,13 @@ use Ywf\Core\Env;
 
 class WebException extends \Exception
 {
-    const INTER_ERROR = 220100100;
-    const PARAM_ERROR = 220100101;
-
+    const INTER_ERROR = 100000000;
+    const PARAM_ERROR = 100000001;
+    const CLASS_NOT_EXSIST = 100000002;
     public static $msgs = [
         self::INTER_ERROR => '未知错误',
         self::PARAM_ERROR => '参数错误',
+        self::CLASS_NOT_EXSIST => '类不存在',
     ];
 
 
