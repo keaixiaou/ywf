@@ -113,13 +113,20 @@ class Ywf
             call_user_func([$item, 'init']);
         }
         self::initPath();
+        self::initLibrary();
+    }
+
+    private static function initLibrary(){
+        $libraryFile = Config::getField('project', 'library_file');
+        if(!empty($libraryFile)){
+            require $libraryFile;
+        }
     }
 
     /**
      * @param $rootPath
      * @param bool $run
      * @param null $configPath
-     * @return \ZPHP\Server\IServer
      * @throws \Exception
      */
     public static function run($rootPath)
@@ -156,7 +163,7 @@ class Ywf
                     $response->finish();
                 }
             }else{
-                $controllerClass = 'controller\\'.$httpCallback['module'].'\\'.$httpCallback['controller'];
+                $controllerClass = 'Controller\\'.$httpCallback['module'].'\\'.$httpCallback['controller'];
                 /**
                  * @var Controller $controller;
                  */

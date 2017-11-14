@@ -9,4 +9,5 @@ namespace Ywf\Core;
 
 class YwfException extends \Exception{
 
+
 }

@@ -87,7 +87,7 @@ class Error {
                     <h1>$msg</h1>
                     <p>$content</p><pre>
 HTMLS;
-        if (DEBUG===true) {
+        if (DEBUG===true && empty(self::$exception)) {
             $trace = debug_backtrace();
             $info .= str_repeat('-', 100) . "<br/>";
             foreach ($trace as $k => $t) {

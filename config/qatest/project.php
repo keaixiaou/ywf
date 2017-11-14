@@ -6,7 +6,7 @@ return [
         'project_name' => 'Ywf',
         'app_path' => 'src',
         'tmp_path' => 'tmp',
-        'common_file'  => ROOTPATH.'/src/library/function.php',
+        'library_file'  => ROOTPATH.'/src/Library/function.php',
         'swoole_module' => [
 //        'test'=>ROOTPATH.'/extension/test.so'
         ],

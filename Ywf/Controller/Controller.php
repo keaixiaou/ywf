@@ -12,13 +12,12 @@ use Ywf\Core\Config;
 use Ywf\Core\Log;
 use Ywf\Core\YwfException;
 use Ywf\Network\Http\Error;
-use Ywf\Session\Session;
 use Ywf\Ywf;
 use Ywf\Network\Http\Request;
 use Ywf\Network\Http\Response;
 use Ywf\View\View;
 
-class Controller extends IController{
+class Controller {
 
 
     /**
@@ -29,6 +28,14 @@ class Controller extends IController{
      * @var Response $response;
      */
     protected $response;
+
+    /**
+     * @var Context $context;
+     */
+    protected $context;
+    protected $baseMethod;
+    protected $baseParam = [];
+
 
     protected $cookie;
 
@@ -54,6 +61,7 @@ class Controller extends IController{
         $this->view = Ywf::make(View::class, $vConfig);
         $this->request = Ywf::make(Request::class);
         $this->response = Ywf::make(Response::class);
+        $this->context = Ywf::make(Context::class);
     }
 
 
@@ -83,6 +91,44 @@ class Controller extends IController{
         $this->endResponse($result);
     }
 
+
+    protected function middleware(){
+        return true;
+    }
+
+
+    /**
+     * 返回null 替换
+     * @access protected
+     * @return String
+     */
+    protected function strNull($str){
+        return str_replace(array('NULL', 'null'), '""', $str);
+    }
+
+
+    /**
+     * 检测response是否结束
+     * @return bool
+     */
+    protected function checkResponse(){
+        return $this->response->checkResponse();
+    }
+
+    public function setApi(){
+        $this->response->setApi();
+    }
+
+    public function checkApi(){
+        return $this->response->checkApi();
+    }
+
+    public function setMvc($mvc){
+        $this->context->set('module', $mvc['module']);
+        $this->context->set('controller', $mvc['controller']);
+        $this->context->set('action',  $mvc['action']);
+        $this->baseMethod = $this->context->get('action');
+    }
 
     protected function endResponse($result){
         if($this->checkResponse()){
@@ -171,7 +217,7 @@ class Controller extends IController{
      * @param $name
      * @param $value
      */
-    protected function assign($name, $value){
+    public function assign($name, $value){
         $this->tplVar[$name] = $value;
     }
 
@@ -181,7 +227,7 @@ class Controller extends IController{
      * @param $template
      * @throws \Exception
      */
-    protected function setTemplate($template){
+    public function setTemplate($template){
         $this->view->setTemplate($template);
     }
 
@@ -201,7 +247,7 @@ class Controller extends IController{
      * 跳转方法
      * @param $url
      */
-    protected function redirect($url){
+    public function redirect($url){
         $this->setHeader('Location', $url);
         $this->strReturn('', 302);
     }
@@ -242,9 +288,9 @@ class Controller extends IController{
     {
         if(!empty($this->view)) {
             $this->view->init([
-                'module' => $this->module,
-                'controller' => $this->controller,
-                'method' => $this->action
+                'module' => $this->context->get('module'),
+                'controller' => $this->context->get('controller'),
+                'method' => $this->context->get('action')
             ]);
         }
     }

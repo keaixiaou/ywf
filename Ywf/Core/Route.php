@@ -22,25 +22,12 @@ class Route {
                     if (is_string($v)) {
                         $v = trim($v, '\\');
                     }
-                    if (preg_match_all('/(.*?)\/{.*?}/', $k, $match)) {
-                        $routeK = str_replace('{', '(?P<', $routeK);
-                        $routeK = str_replace('}', '>[^/]++)', $routeK);
-                        $routeK = '#^' . $routeK . '$#';
-                        if ($method == 'ANY') {
-                            self::$matchRouteList['POST'][$routeK] = $v;
-                            self::$matchRouteList['GET'][$routeK] = $v;
-                        } else {
-                            self::$matchRouteList[$method][$routeK] = $v;
-                        }
+                    if ($method == 'ANY') {
+                        self::$routeList['POST'][$routeK] = $v;
+                        self::$routeList['GET'][$routeK] = $v;
                     } else {
-                        if ($method == 'ANY') {
-                            self::$routeList['POST'][$routeK] = $v;
-                            self::$routeList['GET'][$routeK] = $v;
-                        } else {
-                            self::$routeList[$method][$routeK] = $v;
-                        }
+                        self::$routeList[$method][$routeK] = $v;
                     }
-
                 }
             }
         }
@@ -77,16 +64,19 @@ class Route {
             }else if($uriResult instanceof \Closure){
                 $uriResult = ['callback'=>$uriResult];
             }
-        }else if(!empty(self::$matchRouteList[$method])){
-            $methodMatchList = self::$matchRouteList[$method];
-            foreach($methodMatchList as $key => $value){
-                if(preg_match($key, $uri, $tmpMatch)){
-                    if(is_string($value))$uriResult = self::parseString($value);
-                    else $uriResult = ['callback'=>$value,'param'=>$tmpMatch];
-                }
-            }
-
         }
+        /**
+         * 考虑性能不做这块的功能
+         */
+//        else if(!empty(self::$matchRouteList[$method])){
+//            $methodMatchList = self::$matchRouteList[$method];
+//            foreach($methodMatchList as $key => $value){
+//                if(preg_match($key, $uri, $tmpMatch)){
+//                    if(is_string($value))$uriResult = self::parseString($value);
+//                    else $uriResult = ['callback'=>$value,'param'=>$tmpMatch];
+//                }
+//            }
+//        }
         return $uriResult;
     }
 
@@ -96,7 +86,7 @@ class Route {
      * @return array
      * @throws \Exception
      */
-    protected function parseString($str){
+    protected static function parseString($str){
         $mvc = explode('\\', $str);
         $explodeNum = count($mvc)-1;
         if($explodeNum>=1){
@@ -126,16 +116,16 @@ class Route {
      */
     static public function defaultParse($uri){
         $mvc = Config::getField('project','mvc');
-        $url_array = explode('/', trim($uri,'/'));
-        if(!empty($url_array[2])){
-            $mvc['module'] = $url_array[0];
-            $mvc['controller'] = $url_array[1];
-            $mvc['action'] = $url_array[2];
-        }else if(!empty($url_array[1])){
-            $mvc['controller'] = $url_array[0];
-            $mvc['action'] = $url_array[1];
-        }else if(!empty($url_array[0])){
-            $mvc['module'] = $url_array[0];
+        $urlArray = explode('/', trim($uri,'/'));
+        if(!empty($urlArray[2])){
+            $mvc['module'] = $urlArray[0];
+            $mvc['controller'] = $urlArray[1];
+            $mvc['action'] = $urlArray[2];
+        }else if(!empty($urlArray[1])){
+            $mvc['controller'] = $urlArray[0];
+            $mvc['action'] = $urlArray[1];
+        }else if(!empty($urlArray[0])){
+            $mvc['module'] = $urlArray[0];
         }
         $mvc = [ 'mvc'=> self::dealUcfirst($mvc)];
         return $mvc;

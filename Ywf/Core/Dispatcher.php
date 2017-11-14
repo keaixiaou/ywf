@@ -56,7 +56,7 @@ class Dispatcher{
      */
     public function defaultDistribute($mvc)
     {
-        $controllerClass = 'controller\\'.$mvc['module'].'\\'.$mvc['controller'];
+        $controllerClass = 'Controller\\'.$mvc['module'].'\\'.$mvc['controller'];
         $controller = Ywf::make($controllerClass);
         $action = $mvc['action'];
         if(!method_exists($controller, $action)){
