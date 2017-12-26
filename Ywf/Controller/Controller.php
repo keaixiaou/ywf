@@ -163,7 +163,6 @@ class Controller {
             }
         }
 
-        $this->response->setCookie($this->cookie);
         $this->response->finish();
         Log::clear();
     }

@@ -64,17 +64,16 @@ abstract class Session
 
     public static function finish(){
         if(self::$config['enable']) {
-            Ywf::make(Cookie::class)->finish();
+            Cookie::finish();
             self::$handle->set(self::$data);
         }
     }
 
     public static function getSessionKey(){
-        $cookie = Ywf::make(Cookie::class);
-        $sid = $cookie->get(self::KEY);
+        $sid = Cookie::get(self::KEY);
         if(empty($sid)){
             $sid = Rand::string(26);
-            $cookie->set(self::KEY, $sid);
+            Cookie::set(self::KEY, $sid);
         }
         return Config::getField('session', 'name').'_'.$sid;
     }

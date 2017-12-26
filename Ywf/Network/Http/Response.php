@@ -8,6 +8,7 @@
 
 namespace Ywf\Network\Http;
 
+use Ywf\Cookie\Cookie;
 use Ywf\Core\YwfException;
 use Ywf\Network\BaseResponse;
 use Ywf\Session\Session;
@@ -53,7 +54,6 @@ class Response extends BaseResponse{
         'Connection'=>'keep-alive'
     ];
 
-    private $cookie = [];
     private $session = [];
     private $code = 200;
 
@@ -74,18 +74,6 @@ class Response extends BaseResponse{
         $this->setTypeVal('header', $key, $value);
     }
 
-    public function setCookie($cookie){
-        $this->cookie = $cookie;
-    }
-
-    public function getCookie(){
-        return $this->cookie;
-    }
-
-    public function setCookieVal($key, $value=null){
-        $this->setTypeVal('cookie', $key, $value);
-    }
-
 
     public function setSession($session){
         $this->session = $session;
@@ -99,19 +87,6 @@ class Response extends BaseResponse{
         $this->code = $code;
     }
 
-    public function getSession(){
-        return $this->session;
-    }
-
-    protected function responseArrayVal($type, $cacheTime=0){
-        foreach($this->$type as $key => $value){
-            if(empty($cacheTime))
-                $this->swResponse->$type($key, $value);
-            else
-                $this->swResponse->$type($key, $value, time()+$cacheTime);
-        }
-    }
-
 
     protected function responseHeader(){
         foreach ($this->header as $key => $value){
@@ -120,24 +95,7 @@ class Response extends BaseResponse{
     }
 
     protected function responseSession(){
-//        if(!empty(Config::getField('session', 'enable'))){
-//            $sid = null;
-//            if(!empty($this->cookie[Session::$_sessionKey]))
-//                $sid = $this->cookie[Session::$_sessionKey];
-//            if(empty($sid)){
-//                $sid = Rand::string(8);
-//                $this->cookie[Session::$_sessionKey] = $sid;
-//            }
-//            yield Session::set($this->session, $sid);
-//        }
-        $this->responseCookie();
         Session::finish();
-    }
-
-    protected function responseCookie(){
-//        if(!empty($this->cookie)) {
-//            $this->responseArrayVal('cookie');
-//        }
     }
 
     public function finish(){

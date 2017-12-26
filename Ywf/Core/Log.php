@@ -18,7 +18,6 @@ abstract class Log {
     const WARN    = 3;
     const ERROR   = 4;
     private static $log=[];
-    private static $syslog=[];
 
     protected static $level_str = array(
         'TRACE',
@@ -42,21 +41,15 @@ abstract class Log {
     /**
      * 实际写日志
      */
-    static protected function reallyWrite($type=false){
-        if($type===false){
-            $str = implode("", self::$log);
-            $filePath = Ywf::getLogPath();
-            if(!is_dir($filePath)){
-                mkdir($filePath, 0755, true);
-            }
-            $fileName = $filePath.'/'.date('Y-m-d').'.log';
-            error_log($str, 3, $fileName);
-            self::$log = [];
-        }else{
-            $str = implode("", self::$syslog);
-            $fileName = Ywf::getSystemLog();
-            error_log($str, 3, $fileName);
+    static protected function reallyWrite(){
+        $str = implode("", self::$log);
+        $filePath = Ywf::getLogPath();
+        if(!is_dir($filePath)){
+            mkdir($filePath, 0755, true);
         }
+        $fileName = $filePath.'/'.date('Y-m-d').'.log';
+        error_log($str, 3, $fileName);
+        self::$log = [];
     }
 
     /**
@@ -65,9 +58,6 @@ abstract class Log {
     static public function clear(){
         if(!empty(self::$log)){
             self::reallyWrite();
-        }
-        if(!empty(self::$syslog)){
-            self::reallyWrite(true);
         }
     }
 }

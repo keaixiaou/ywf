@@ -9,31 +9,30 @@
 namespace Ywf\Cookie;
 
 class Cookie {
-    private $data;
-    public function __construct()
-    {
-        $this->init();
+    private static $data;
+
+    public static function init(){
+        self::$data = $_COOKIE;
     }
 
-    public function init(){
-        $this->data = $_COOKIE;
+    public static function get($key){
+        return isset(self::$data[$key])?self::$data[$key]:null;
     }
 
-    public function get($key){
-        return isset($this->data[$key])?$this->data[$key]:null;
-    }
-
-    public function set($key, $value=null){
+    public static function set($key, $value=null){
         if(is_null($value)){
-            unset($this->data[$key]);
+            unset(self::$data[$key]);
         }else{
-            $this->data[$key] = $value;
+            self::$data[$key] = $value;
         }
     }
 
-    public function finish(){
-        foreach ($this->data as $key => $value){
-            setcookie($key, $value);
+    public static function finish(){
+        if(!empty(self::$data)){
+            foreach (self::$data as $key => $value){
+                setcookie($key, $value);
+            }
         }
+
     }
 }

@@ -8,6 +8,7 @@
 
 namespace Ywf\Network\Http;
 
+use Ywf\Cookie\Cookie;
 use Ywf\Core\Filter;
 use Ywf\Session\Session;
 
@@ -35,9 +36,9 @@ class Request{
         $this->get = $_GET;
         $this->post = $_POST;
         $this->request = $_REQUEST;
+        Cookie::init();
         Session::init();
         $this->session = Session::get();
-        $this->cookie = $_COOKIE;
     }
 
 
